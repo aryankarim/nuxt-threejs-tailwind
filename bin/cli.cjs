@@ -1,8 +1,8 @@
-#! usr/bin/env node
+#!/usr/bin/env node
 
 const { execSync } = require("child_process");
 
-const runCommand = () => {
+const runCommand = (command) => {
   try {
     execSync(`${command}`, { stdio: "inherit" });
   } catch (error) {
