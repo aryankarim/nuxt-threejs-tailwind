@@ -1,7 +1,7 @@
 {
-  "name": "nuxt-app",
-  "private": true,
+  "name": "create-nuxt-threejs-tailiwnd",
   "type": "module",
+  "bin": "./bin/cli.js",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -24,5 +24,6 @@
   "dependencies": {
     "@pinia/nuxt": "^0.5.1",
     "pinia": "^2.1.7"
-  }
+  },
+  "version": "1.0.0"
 }
