@@ -24,6 +24,6 @@
     "@pinia/nuxt": "^0.5.1",
     "pinia": "^2.1.7"
   },
-  "version": "1.0.14",
+  "version": "1.0.17",
   "license": "MIT"
 }
