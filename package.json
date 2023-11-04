@@ -1,7 +1,7 @@
 {
   "name": "create-nuxt-threejs-tailwind",
   "type": "module",
-  "bin": "./bin/cli.js",
+  "bin": "./bin/cli.cjs",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -24,6 +24,6 @@
     "@pinia/nuxt": "^0.5.1",
     "pinia": "^2.1.7"
   },
-  "version": "1.0.9",
+  "version": "1.0.10",
   "license": "MIT"
 }
