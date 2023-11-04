@@ -1,4 +1,4 @@
-import { camera, renderer } from "../../environment/renderer";
+import { lens, renderer } from "../../environment/renderer";
 
 function resizeRendererToDisplaySize(renderer: any) {
   const canvas = renderer.domElement;
@@ -16,7 +16,7 @@ function resizeRendererToDisplaySize(renderer: any) {
 export const checkForResize = () => {
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
-    camera.camera.aspect = canvas.clientWidth / canvas.clientHeight;
-    camera.camera.updateProjectionMatrix();
+    lens.camera.aspect = canvas.clientWidth / canvas.clientHeight;
+    lens.camera.updateProjectionMatrix();
   }
 };

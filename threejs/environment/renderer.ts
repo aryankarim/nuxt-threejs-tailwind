@@ -1,11 +1,11 @@
 import * as THREE from "three";
-import { Camera } from "./camera";
+import { Lens } from "./lens";
 
 THREE.ColorManagement.enabled = false;
 
 const textureLoader = new THREE.TextureLoader();
 
-const camera = new Camera();
+const lens = new Lens();
 
 let scene = new THREE.Scene();
 
@@ -33,4 +33,4 @@ export const bgColor = { backgroundColor: "#010101" };
 renderer.setClearColor(bgColor.backgroundColor);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-export { camera, scene, renderer, textureLoader };
+export { lens, scene, renderer, textureLoader };
