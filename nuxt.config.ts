@@ -1,4 +1,15 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true }
-})
+  modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss"],
+  devtools: { enabled: true },
+  css: ["~/assets/css/main.css"],
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
+    },
+  },
+  pinia: {
+    storesDirs: ["./stores/**"],
+  },
+});
