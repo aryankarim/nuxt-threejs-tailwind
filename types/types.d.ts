@@ -1,10 +1,16 @@
 import type GUI from "lil-gui";
 
+/**
+ *
+ * Experience
+ *
+ */
+
 interface ExperienceType {
   _canvas?: HTMLCanvasElement;
-  debug?: DebugType;
-  sizes;
-  time;
+  debug: DebugType;
+  sizes: SizesType;
+  time: TimeType;
   scene;
   resources;
   camera;
@@ -12,12 +18,30 @@ interface ExperienceType {
   world;
 }
 
+/**
+ *
+ * UTILS
+ *
+ */
+
 interface DebugType {
   active?: boolean;
   ui?: GUI;
 }
 
-interface SizesType {}
+interface SizesType extends EventEmitterType {
+  width: number;
+  height: number;
+  pixelRatio: number;
+}
+
+interface TimeType extends EventEmitterType {}
+
+/**
+ *
+ * Event Emitter
+ *
+ */
 
 interface NewName {
   original?: string;
@@ -32,4 +56,6 @@ interface CallBacks {
 
 interface EventEmitterType {
   callbacks: CallBacks;
+  on(names: string, callback: () => void): EventEmitterType | boolean;
+  off(names: string): EventEmitterType | boolean;
 }

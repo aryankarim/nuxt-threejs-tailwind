@@ -9,15 +9,20 @@ import World from "./World/World";
 import Resources from "./Utils/Resources";
 
 import sources from "./sources";
-import type { ExperienceType } from "~/types/types";
+import type {
+  DebugType,
+  ExperienceType,
+  SizesType,
+  TimeType,
+} from "~/types/types";
 
 let instance: any = null;
 
 export default class Experience implements ExperienceType {
   canvas?: HTMLCanvasElement;
-  debug?: Debug;
-  sizes;
-  time;
+  debug: DebugType = new Debug();
+  sizes: SizesType = new Sizes();
+  time: TimeType = new Time();
   scene;
   resources;
   camera;
@@ -38,9 +43,7 @@ export default class Experience implements ExperienceType {
     this.canvas = canvas;
 
     // Setup
-    this.debug = new Debug();
-    this.sizes = new Sizes();
-    this.time = new Time();
+
     this.scene = new THREE.Scene();
     this.resources = new Resources(sources);
     this.camera = new Camera();
