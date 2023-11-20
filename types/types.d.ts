@@ -35,7 +35,37 @@ interface SizesType extends EventEmitterType {
   pixelRatio: number;
 }
 
-interface TimeType extends EventEmitterType {}
+interface TimeType extends EventEmitterType {
+  start: number;
+  current: number;
+  elapsed: number;
+  delta: number;
+  tick: () => void;
+}
+
+interface ResourcesType extends EventEmitter {
+  sources: Array<Source>;
+  loaders: Loader;
+  items: Object;
+  toLoad: number;
+  loaded: number = 0;
+}
+
+interface Loader {
+  gltfLoader?: any;
+  textureLoader?: THREE.TextureLoader;
+  cubeTextureLoader?: THREE.CubeTextureLoader;
+}
+
+interface TextureItems {
+  [key: string]: THREE.Texture;
+}
+
+interface Source {
+  name: string;
+  type: string;
+  path: string | string[];
+}
 
 /**
  *
@@ -58,4 +88,5 @@ interface EventEmitterType {
   callbacks: CallBacks;
   on(names: string, callback: () => void): EventEmitterType | boolean;
   off(names: string): EventEmitterType | boolean;
+  trigger: (_name: string, _args?: any) => EventEmitterType | Object | null;
 }

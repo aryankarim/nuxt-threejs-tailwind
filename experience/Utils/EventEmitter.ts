@@ -8,7 +8,7 @@ export default class EventEmitter implements EventEmitterType {
     this.callbacks.base = {};
   }
 
-  on(_names: string, callback: Function) {
+  on(_names: string, callback: Function): EventEmitterType | boolean {
     // Errors
     if (typeof _names === "undefined" || _names === "") {
       console.warn("wrong names");
@@ -55,7 +55,7 @@ export default class EventEmitter implements EventEmitterType {
     return this;
   }
 
-  off(_names: string) {
+  off(_names: string): EventEmitterType | boolean {
     // Errors
     if (typeof _names === "undefined" || _names === "") {
       console.warn("wrong name");
@@ -125,8 +125,8 @@ export default class EventEmitter implements EventEmitterType {
       return false;
     }
 
-    let finalResult: {} | null = null;
-    let result: {} | null = null;
+    let finalResult: Object | null = null;
+    let result: Object | null = null;
 
     // Default args
     const args = !(_args instanceof Array) ? [] : _args;

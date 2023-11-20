@@ -1,16 +1,25 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import EventEmitter from "./EventEmitter.ts";
+import type {
+  Loader,
+  ResourcesType,
+  Source,
+  TextureItems,
+} from "~/types/types.js";
+import EventEmitter from "./EventEmitter";
 
-export default class Resources extends EventEmitter {
-  constructor(sources) {
+export default class Resources extends EventEmitter implements ResourcesType {
+  sources: Array<Source>;
+  loaders: Loader = {};
+  items: TextureItems = {};
+  toLoad: number;
+  loaded: number = 0;
+
+  constructor(sources: Array<Source>) {
     super();
 
     this.sources = sources;
-
-    this.items = {};
     this.toLoad = this.sources.length;
-    this.loaded = 0;
 
     this.setLoaders();
     this.startLoading();
@@ -27,23 +36,29 @@ export default class Resources extends EventEmitter {
     // Load each source
     for (const source of this.sources) {
       if (source.type === "gltfModel") {
-        this.loaders.gltfLoader.load(source.path, (file) => {
+        this.loaders.gltfLoader?.load(source.path, (file: THREE.Texture) => {
           this.sourceLoaded(source, file);
         });
       } else if (source.type === "texture") {
-        this.loaders.textureLoader.load(source.path, (file) => {
-          this.sourceLoaded(source, file);
-        });
+        this.loaders.textureLoader?.load(
+          source.path as string,
+          (file: THREE.Texture) => {
+            this.sourceLoaded(source, file);
+          }
+        );
       } else if (source.type === "cubeTexture") {
-        this.loaders.cubeTextureLoader.load(source.path, (file) => {
-          this.sourceLoaded(source, file);
-        });
+        this.loaders.cubeTextureLoader?.load(
+          source.path as string[],
+          (file: THREE.Texture) => {
+            this.sourceLoaded(source, file);
+          }
+        );
       }
     }
   }
 
-  sourceLoaded(source, file) {
-    this.items[source.name] = file;
+  sourceLoaded(source: Source, file: THREE.Texture) {
+    this.items[source.name as keyof TextureItems] = file;
 
     this.loaded++;
 

@@ -1,6 +1,7 @@
+import type { TimeType } from "~/types/types";
 import EventEmitter from "./EventEmitter";
 
-export default class Time extends EventEmitter {
+export default class Time extends EventEmitter implements TimeType {
   start: number = Date.now();
   current: number;
   elapsed: number = 0;
