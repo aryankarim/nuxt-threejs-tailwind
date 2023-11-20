@@ -1,4 +1,5 @@
 import type GUI from "lil-gui";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 /**
  *
@@ -6,16 +7,31 @@ import type GUI from "lil-gui";
  *
  */
 
+type SceneType = THREE.Scene;
+type CanvasType = HTMLCanvasElement;
+
 interface ExperienceType {
-  _canvas?: HTMLCanvasElement;
+  canvas?: CanvasType;
   debug: DebugType;
   sizes: SizesType;
   time: TimeType;
-  scene;
+  scene: SceneType;
   resources;
   camera;
   renderer;
   world;
+  resize: () => void;
+  update: () => void;
+  destroy: () => void;
+}
+
+interface CameraType {
+  experience: ExperienceType;
+  sizes: SizesType;
+  scene: SceneType;
+  canvas?: CanvasType;
+  instance: THREE.PerspectiveCamera;
+  controls: OrbitControls;
 }
 
 /**

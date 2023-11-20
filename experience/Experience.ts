@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import type TYPE from "~/types/types";
 
 import Debug from "./Utils/Debug";
 import Sizes from "./Utils/Sizes";
@@ -10,18 +11,16 @@ import Resources from "./Utils/Resources";
 
 import sources from "./sources";
 
-import type TYPE from "~/types/types";
-
-let instance: any = null;
+let instance: Experience | null = null;
 
 export default class Experience implements TYPE.ExperienceType {
-  canvas?: HTMLCanvasElement;
-  debug: TYPE.DebugType = new Debug();
-  sizes: TYPE.SizesType = new Sizes();
-  time: TYPE.TimeType = new Time();
-  scene: THREE.Scene = new THREE.Scene();
-  resources: TYPE.ResourcesType = new Resources(sources);
-  camera;
+  canvas;
+  debug = new Debug();
+  sizes = new Sizes();
+  time = new Time();
+  scene = new THREE.Scene();
+  resources = new Resources(sources);
+  camera = new Camera();
   renderer;
   world;
 
@@ -40,7 +39,6 @@ export default class Experience implements TYPE.ExperienceType {
 
     // Setup
 
-    this.camera = new Camera();
     this.renderer = new Renderer();
     this.world = new World();
 

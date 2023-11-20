@@ -1,19 +1,22 @@
 import * as THREE from "three";
 import Experience from "./Experience";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import type { CameraType } from "~/types/types";
 
-export default class Camera {
+export default class Camera implements CameraType {
+  experience = new Experience();
+  sizes;
+  scene;
+  canvas;
+  instance;
+  controls;
+
   constructor() {
-    this.experience = new Experience();
     this.sizes = this.experience.sizes;
     this.scene = this.experience.scene;
     this.canvas = this.experience.canvas;
 
-    this.setInstance();
-    this.setControls();
-  }
-
-  setInstance() {
+    //  set instance
     this.instance = new THREE.PerspectiveCamera(
       35,
       this.sizes.width / this.sizes.height,
@@ -22,9 +25,7 @@ export default class Camera {
     );
     this.instance.position.set(6, 4, 8);
     this.scene.add(this.instance);
-  }
-
-  setControls() {
+    // set controls
     this.controls = new OrbitControls(this.instance, this.canvas);
     this.controls.enableDamping = true;
   }
