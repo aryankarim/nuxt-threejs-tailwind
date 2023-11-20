@@ -38,20 +38,24 @@ export default class EventEmitter implements EventEmitterType {
       if (
         !(
           this.callbacks[name.namespace as keyof CallBacks]?.[
-            name.value
+            name.value as string
           ] instanceof Array
         )
       )
-        this.callbacks[name.namespace][name.value] = [];
+        this.callbacks[name.namespace as keyof CallBacks][
+          name.value as string
+        ] = [];
 
       // Add callback
-      this.callbacks[name.namespace][name.value].push(callback);
+      this.callbacks[name.namespace as keyof CallBacks][
+        name.value as string
+      ].push(callback);
     });
 
     return this;
   }
 
-  off(_names) {
+  off(_names: string) {
     // Errors
     if (typeof _names === "undefined" || _names === "") {
       console.warn("wrong name");
@@ -68,7 +72,7 @@ export default class EventEmitter implements EventEmitterType {
 
       // Remove namespace
       if (name.namespace !== "base" && name.value === "") {
-        delete this.callbacks[name.namespace];
+        delete this.callbacks[name.namespace as keyof CallBacks];
       }
 
       // Remove specific callback in namespace
@@ -92,14 +96,21 @@ export default class EventEmitter implements EventEmitterType {
 
         // Specified namespace
         else if (
-          this.callbacks[name.namespace] instanceof Object &&
-          this.callbacks[name.namespace][name.value] instanceof Array
+          this.callbacks[name.namespace as keyof CallBacks] instanceof Object &&
+          this.callbacks[name.namespace as keyof CallBacks][
+            name.value as string
+          ] instanceof Array
         ) {
-          delete this.callbacks[name.namespace][name.value];
+          delete this.callbacks[name.namespace as keyof CallBacks][
+            name.value as string
+          ];
 
           // Remove namespace if empty
-          if (Object.keys(this.callbacks[name.namespace]).length === 0)
-            delete this.callbacks[name.namespace];
+          if (
+            Object.keys(this.callbacks[name.namespace as keyof CallBacks])
+              .length === 0
+          )
+            delete this.callbacks[name.namespace as keyof CallBacks];
         }
       }
     });
@@ -107,53 +118,59 @@ export default class EventEmitter implements EventEmitterType {
     return this;
   }
 
-  trigger(_name, _args) {
+  trigger(_name: string, _args: any) {
     // Errors
     if (typeof _name === "undefined" || _name === "") {
       console.warn("wrong name");
       return false;
     }
 
-    let finalResult = null;
-    let result = null;
+    let finalResult: {} | null = null;
+    let result: {} | null = null;
 
     // Default args
     const args = !(_args instanceof Array) ? [] : _args;
 
     // Resolve names (should on have one event)
-    let name = this.resolveNames(_name);
+    let name: string[] = this.resolveNames(_name);
 
     // Resolve name
-    name = this.resolveName(name[0]);
+    let newName = this.resolveName(name[0]);
 
     // Default namespace
-    if (name.namespace === "base") {
+    if (newName.namespace === "base") {
       // Try to find callback in each namespace
       for (const namespace in this.callbacks) {
         if (
           this.callbacks[namespace] instanceof Object &&
-          this.callbacks[namespace][name.value] instanceof Array
+          this.callbacks[namespace][newName.value] instanceof Array
         ) {
-          this.callbacks[namespace][name.value].forEach(function (callback) {
-            result = callback.apply(this, args);
+          this.callbacks[namespace][newName.value].forEach(
+            (callback: () => {}) => {
+              result = callback.apply(callback, args as any);
 
-            if (typeof finalResult === "undefined") {
-              finalResult = result;
+              if (typeof finalResult === "undefined") {
+                finalResult = result;
+              }
             }
-          });
+          );
         }
       }
     }
 
     // Specified namespace
-    else if (this.callbacks[name.namespace] instanceof Object) {
-      if (name.value === "") {
+    else if (
+      this.callbacks[newName.namespace as keyof CallBacks] instanceof Object
+    ) {
+      if (newName.value === "") {
         console.warn("wrong name");
         return this;
       }
 
-      this.callbacks[name.namespace][name.value].forEach(function (callback) {
-        result = callback.apply(this, args);
+      this.callbacks[newName.namespace as keyof CallBacks][
+        newName.value as string
+      ].forEach((callback: () => {}) => {
+        result = callback.apply(callback, args as any);
 
         if (typeof finalResult === "undefined") finalResult = result;
       });
@@ -162,14 +179,14 @@ export default class EventEmitter implements EventEmitterType {
     return finalResult;
   }
 
-  resolveNames(_names: string) {
+  resolveNames(_names: string): string[] {
     let names = _names;
     names = names.replace(/[^a-zA-Z0-9 ,/.]/g, "");
     names = names.replace(/[,/]+/g, " ");
     return names.split(" ");
   }
 
-  resolveName(name) {
+  resolveName(name: string): NewName {
     const newName: NewName = {};
     const parts = name.split(".");
 

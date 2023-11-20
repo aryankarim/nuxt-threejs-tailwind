@@ -19,14 +19,15 @@ interface DebugType {
 
 interface SizesType {}
 
-interface CallBacks {
-  base?: Object;
-}
-
 interface NewName {
   original?: string;
-  value: string;
+  value?: string;
   namespace?: string;
+}
+
+interface CallBacks {
+  base?: Object<any>;
+  [key: string]: Object<any>;
 }
 
 interface EventEmitterType {
