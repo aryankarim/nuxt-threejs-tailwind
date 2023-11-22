@@ -1,6 +1,13 @@
 <template>
+  velcome
   <canvas id="c"></canvas>
 </template>
 <script setup lang="ts">
-onMounted(() => import("../experience/Experience"));
+import Experience from "~/experience/Experience";
+
+onMounted(() => {
+  const experience = new Experience(
+    document.querySelector("#c") as HTMLCanvasElement
+  );
+});
 </script>

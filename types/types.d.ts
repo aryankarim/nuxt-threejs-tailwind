@@ -1,5 +1,6 @@
 import type GUI from "lil-gui";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import type { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 /**
  *
@@ -8,6 +9,10 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
  */
 
 type SceneType = THREE.Scene;
+type TextureType = THREE.Texture;
+type GltfType = GLTF;
+type CubeTextureType = THREE.CubeTexture;
+type TextureItem = TextureType | GltfType | CubeTextureType;
 type CanvasType = HTMLCanvasElement;
 
 interface ExperienceType {
@@ -16,10 +21,10 @@ interface ExperienceType {
   sizes: SizesType;
   time: TimeType;
   scene: SceneType;
-  resources;
-  camera;
-  renderer;
-  world;
+  resources: ResourcesType;
+  camera: CameraType;
+  renderer: RendererType;
+  world: WorldType;
   resize: () => void;
   update: () => void;
   destroy: () => void;
@@ -32,7 +37,60 @@ interface CameraType {
   canvas?: CanvasType;
   instance: THREE.PerspectiveCamera;
   controls: OrbitControls;
+  resize: () => void;
+  update: () => void;
 }
+
+interface RendererType {
+  experience: ExperienceType;
+  canvas?: CanvasType;
+  sizes: SizesType;
+  scene: SceneType;
+  camera: CameraType;
+  instance: THREE.WebGLRender;
+  resize: () => void;
+  update: () => void;
+}
+
+/**
+ *
+ * WORLD
+ *
+ */
+
+interface WorldType {
+  experience: ExperienceType;
+  scene: SceneType;
+  resources: ResourcesType;
+  floor: FloorType | undefined;
+  fox: FoxType | undefined;
+  environment: EnvironmentType | undefined;
+}
+
+interface FloorType {
+  experience: ExperienceType;
+  scene: SceneType;
+  resources: ResourcesType;
+  geometry: THREE.CircleGeometry;
+  textures: Textures;
+  material: THREE.Material;
+  mesh: THREE.Mesh;
+}
+
+interface FoxType {
+  experience: ExperienceType;
+  scene: SceneType;
+  resources: ResourcesType;
+  time: TimeType;
+  debug: DebugType;
+  debugFolder?: GUI;
+  resource: GltfType;
+  model: THREE.Object3D;
+  setModel: () => void;
+  update: () => void;
+}
+
+interface EnvironmentType {}
 
 /**
  *
@@ -62,25 +120,32 @@ interface TimeType extends EventEmitterType {
 interface ResourcesType extends EventEmitter {
   sources: Array<Source>;
   loaders: Loader;
-  items: Object;
   toLoad: number;
   loaded: number = 0;
+  textures: { [key: string]: TextureType };
+  cubeTextures: { [key: string]: CubeTextureType };
+  gltfTextures: { [key: string]: GltfType };
 }
 
 interface Loader {
-  gltfLoader?: any;
+  gltfLoader?: GLTFLoader;
   textureLoader?: THREE.TextureLoader;
   cubeTextureLoader?: THREE.CubeTextureLoader;
 }
 
 interface TextureItems {
-  [key: string]: THREE.Texture;
+  [key: string]: TextureItem;
 }
 
 interface Source {
   name: string;
   type: string;
   path: string | string[];
+}
+
+interface Textures {
+  color?: THREE.Texture;
+  normal?: THREE.Texture;
 }
 
 /**

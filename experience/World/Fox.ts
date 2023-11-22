@@ -1,9 +1,18 @@
 import * as THREE from "three";
-import Experience from "../Experience.ts";
+import Experience from "../Experience";
+import type { FoxType, GltfType, TextureItem } from "~/types/types";
 
-export default class Fox {
+export default class Fox implements FoxType {
+  experience = new Experience();
+  scene;
+  resources;
+  time;
+  debug;
+  debugFolder;
+  resource: TextureItem;
+  model!: THREE.Object3D;
+
   constructor() {
-    this.experience = new Experience();
     this.scene = this.experience.scene;
     this.resources = this.experience.resources;
     this.time = this.experience.time;
@@ -11,7 +20,7 @@ export default class Fox {
 
     // Debug
     if (this.debug.active) {
-      this.debugFolder = this.debug.ui.addFolder("fox");
+      this.debugFolder = this.debug?.ui?.addFolder("fox");
     }
 
     // Resource

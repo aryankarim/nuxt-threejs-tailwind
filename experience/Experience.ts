@@ -21,8 +21,8 @@ export default class Experience implements TYPE.ExperienceType {
   scene = new THREE.Scene();
   resources = new Resources(sources);
   camera = new Camera();
-  renderer;
-  world;
+  renderer = new Renderer();
+  world = new World();
 
   constructor(canvas?: HTMLCanvasElement) {
     // Singleton
@@ -36,11 +36,6 @@ export default class Experience implements TYPE.ExperienceType {
 
     // Options
     this.canvas = canvas;
-
-    // Setup
-
-    this.renderer = new Renderer();
-    this.world = new World();
 
     // Resize event
     this.sizes.on("resize", () => {
@@ -89,6 +84,6 @@ export default class Experience implements TYPE.ExperienceType {
     this.camera?.controls?.dispose();
     this.renderer?.instance?.dispose();
 
-    if (this.debug?.active) this.debug.ui.destroy();
+    if (this.debug?.active) this.debug?.ui?.destroy();
   }
 }

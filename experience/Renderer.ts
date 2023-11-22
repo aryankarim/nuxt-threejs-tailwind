@@ -1,24 +1,21 @@
 import * as THREE from "three";
 import Experience from "./Experience";
+import type { RendererType } from "~/types/types";
 
-export default class Renderer {
-  experience;
+export default class Renderer implements RendererType {
+  experience = new Experience();
   canvas;
   sizes;
   scene;
   camera;
+  instance;
 
   constructor() {
-    this.experience = new Experience();
     this.canvas = this.experience.canvas;
     this.sizes = this.experience.sizes;
     this.scene = this.experience.scene;
     this.camera = this.experience.camera;
 
-    this.setInstance();
-  }
-
-  setInstance() {
     this.instance = new THREE.WebGLRenderer({
       canvas: this.canvas,
       antialias: true,
