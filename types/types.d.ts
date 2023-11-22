@@ -12,7 +12,7 @@ type SceneType = THREE.Scene;
 type TextureType = THREE.Texture;
 type GltfType = GLTF;
 type CubeTextureType = THREE.CubeTexture;
-type TextureItem = TextureType | GltfType | CubeTextureType;
+type TextureItem<T> = T;
 type CanvasType = HTMLCanvasElement;
 
 interface ExperienceType {
@@ -90,7 +90,21 @@ interface FoxType {
   update: () => void;
 }
 
-interface EnvironmentType {}
+interface EnvironmentType {
+  experience: ExperienceType;
+  scene: SceneType;
+  resources: ResourcesType;
+  debug: DebugType;
+  debugFolder: any;
+  sunLight: THREE.DirectionalLight;
+  environmentMap: EnvironmentMapType;
+}
+
+interface EnvironmentMapType {
+  intensity: number;
+  texture: TextureType | null;
+  updateMaterials?: () => void;
+}
 
 /**
  *
@@ -133,8 +147,8 @@ interface Loader {
   cubeTextureLoader?: THREE.CubeTextureLoader;
 }
 
-interface TextureItems {
-  [key: string]: TextureItem;
+interface TextureItems<T> {
+  [key: string]: TextureItem<T>;
 }
 
 interface Source {

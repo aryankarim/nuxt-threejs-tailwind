@@ -20,9 +20,9 @@ export default class Resources extends EventEmitter implements ResourcesType {
   loaders: Loader = {};
   toLoad: number;
   loaded: number = 0;
-  textures!: { [key: string]: TextureType };
-  cubeTextures!: { [key: string]: CubeTextureType };
-  gltfTextures!: { [key: string]: GltfType };
+  textures!: { [key: string]: TextureItem<TextureType> };
+  cubeTextures!: { [key: string]: TextureItem<CubeTextureType> };
+  gltfTextures!: { [key: string]: TextureItem<GltfType> };
 
   constructor(sources: Array<Source>) {
     super();
@@ -67,11 +67,21 @@ export default class Resources extends EventEmitter implements ResourcesType {
   }
 
   sourceLoaded(
-    label: keyof TextureItems,
-    file: TextureItem,
+    label: keyof TextureItems<any>,
+    file: TextureItem<any>,
     location: keyof ResourcesType
   ) {
-    this[location][label] = file;
+    switch (location) {
+      case "textures":
+        this.textures[label as keyof TextureItems<TextureType>] = file;
+        break;
+      case "gltfTextures":
+        this.gltfTextures[label as keyof TextureItems<GltfType>] = file;
+        break;
+      case "cubeTextures":
+        this.cubeTextures[label as keyof TextureItems<CubeTextureType>] = file;
+        break;
+    }
 
     this.loaded++;
 

@@ -9,7 +9,7 @@ export default class Fox implements FoxType {
   time;
   debug;
   debugFolder;
-  resource: TextureItem;
+  resource: TextureItem<GltfType>;
   model!: THREE.Object3D;
 
   constructor() {
@@ -24,7 +24,7 @@ export default class Fox implements FoxType {
     }
 
     // Resource
-    this.resource = this.resources.items.foxModel;
+    this.resource = this.resources.gltfTextures.foxModel;
 
     this.setModel();
     this.setAnimation();

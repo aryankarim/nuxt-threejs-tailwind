@@ -1,16 +1,24 @@
 import * as THREE from "three";
-import Experience from "../Experience.ts";
+import Experience from "../Experience";
+import type { EnvironmentMapType, EnvironmentType } from "~/types/types";
 
-export default class Environment {
+export default class Environment implements EnvironmentType {
+  experience = new Experience();
+  scene;
+  resources;
+  debug;
+  debugFolder;
+  sunLight = new THREE.DirectionalLight("#ffffff", 4);
+  environmentMap: EnvironmentMapType = { intensity: 0.4, texture: null };
+
   constructor() {
-    this.experience = new Experience();
     this.scene = this.experience.scene;
     this.resources = this.experience.resources;
     this.debug = this.experience.debug;
 
     // Debug
     if (this.debug.active) {
-      this.debugFolder = this.debug.ui.addFolder("environment");
+      this.debugFolder = this.debug?.ui?.addFolder("environment");
     }
 
     this.setSunLight();
@@ -18,7 +26,6 @@ export default class Environment {
   }
 
   setSunLight() {
-    this.sunLight = new THREE.DirectionalLight("#ffffff", 4);
     this.sunLight.castShadow = true;
     this.sunLight.shadow.camera.far = 15;
     this.sunLight.shadow.mapSize.set(1024, 1024);
@@ -29,28 +36,28 @@ export default class Environment {
     // Debug
     if (this.debug.active) {
       this.debugFolder
-        .add(this.sunLight, "intensity")
+        ?.add(this.sunLight, "intensity")
         .name("sunLightIntensity")
         .min(0)
         .max(10)
         .step(0.001);
 
       this.debugFolder
-        .add(this.sunLight.position, "x")
+        ?.add(this.sunLight.position, "x")
         .name("sunLightX")
         .min(-5)
         .max(5)
         .step(0.001);
 
       this.debugFolder
-        .add(this.sunLight.position, "y")
+        ?.add(this.sunLight.position, "y")
         .name("sunLightY")
         .min(-5)
         .max(5)
         .step(0.001);
 
       this.debugFolder
-        .add(this.sunLight.position, "z")
+        ?.add(this.sunLight.position, "z")
         .name("sunLightZ")
         .min(-5)
         .max(5)
@@ -59,9 +66,8 @@ export default class Environment {
   }
 
   setEnvironmentMap() {
-    this.environmentMap = {};
     this.environmentMap.intensity = 0.4;
-    this.environmentMap.texture = this.resources.items.environmentMapTexture;
+    this.environmentMap.texture = this.resources.textures.environmentMapTexture;
     this.environmentMap.texture.colorSpace = THREE.SRGBColorSpace;
 
     this.scene.environment = this.environmentMap.texture;
@@ -83,7 +89,7 @@ export default class Environment {
     // Debug
     if (this.debug.active) {
       this.debugFolder
-        .add(this.environmentMap, "intensity")
+        ?.add(this.environmentMap, "intensity")
         .name("envMapIntensity")
         .min(0)
         .max(4)
