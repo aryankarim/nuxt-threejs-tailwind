@@ -20,9 +20,9 @@ export default class Resources extends EventEmitter implements ResourcesType {
   loaders: Loader = {};
   toLoad: number;
   loaded: number = 0;
-  textures!: { [key: string]: TextureItem<TextureType> };
-  cubeTextures!: { [key: string]: TextureItem<CubeTextureType> };
-  gltfTextures!: { [key: string]: TextureItem<GltfType> };
+  textures: { [key: string]: TextureItem<TextureType> } = {};
+  cubeTextures: { [key: string]: TextureItem<CubeTextureType> } = {};
+  gltfTextures: { [key: string]: TextureItem<GltfType> } = {};
 
   constructor(sources: Array<Source>) {
     super();

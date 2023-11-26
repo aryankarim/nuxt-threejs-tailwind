@@ -8,21 +8,21 @@ import Camera from "./Camera";
 import Renderer from "./Renderer";
 import World from "./World/World";
 import Resources from "./Utils/Resources";
-
 import sources from "./sources";
+import type { CanvasType, ExperienceType } from "~/types/types";
 
 let instance: Experience | null = null;
 
-export default class Experience implements TYPE.ExperienceType {
-  canvas;
-  debug = new Debug();
-  sizes = new Sizes();
-  time = new Time();
-  scene = new THREE.Scene();
-  resources = new Resources(sources);
-  camera = new Camera();
-  renderer = new Renderer();
-  world = new World();
+export default class Experience implements ExperienceType {
+  canvas?: CanvasType;
+  debug!: TYPE.DebugType;
+  sizes!: TYPE.SizesType;
+  time!: TYPE.TimeType;
+  scene!: TYPE.SceneType;
+  resources!: TYPE.ResourcesType;
+  camera!: TYPE.CameraType;
+  renderer!: TYPE.RendererType;
+  world!: TYPE.WorldType;
 
   constructor(canvas?: HTMLCanvasElement) {
     // Singleton
@@ -36,6 +36,14 @@ export default class Experience implements TYPE.ExperienceType {
 
     // Options
     this.canvas = canvas;
+    this.debug = new Debug();
+    this.sizes = new Sizes();
+    this.time = new Time();
+    this.scene = new THREE.Scene();
+    this.resources = new Resources(sources);
+    this.camera = new Camera();
+    this.renderer = new Renderer();
+    this.world = new World();
 
     // Resize event
     this.sizes.on("resize", () => {
@@ -49,22 +57,22 @@ export default class Experience implements TYPE.ExperienceType {
   }
 
   resize() {
-    this.camera?.resize();
-    this.renderer?.resize();
+    this.camera.resize();
+    this.renderer.resize();
   }
 
   update() {
-    this.camera?.update();
-    this.world?.update();
-    this.renderer?.update();
+    this.camera.update();
+    this.world.update();
+    this.renderer.update();
   }
 
   destroy() {
-    this.sizes?.off("resize");
-    this.time?.off("tick");
+    this.sizes.off("resize");
+    this.time.off("tick");
 
     // Traverse the whole scene
-    this.scene?.traverse((child) => {
+    this.scene.traverse((child) => {
       // Test if it's a mesh
       if (child instanceof THREE.Mesh) {
         child.geometry.dispose();
@@ -81,9 +89,9 @@ export default class Experience implements TYPE.ExperienceType {
       }
     });
 
-    this.camera?.controls?.dispose();
-    this.renderer?.instance?.dispose();
+    this.camera.controls.dispose();
+    this.renderer.instance.dispose();
 
-    if (this.debug?.active) this.debug?.ui?.destroy();
+    if (this.debug.active) this.debug.ui.destroy();
   }
 }

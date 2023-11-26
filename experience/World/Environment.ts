@@ -1,9 +1,13 @@
 import * as THREE from "three";
 import Experience from "../Experience";
-import type { EnvironmentMapType, EnvironmentType } from "~/types/types";
+import type {
+  EnvironmentMapType,
+  EnvironmentType,
+  ExperienceType,
+} from "~/types/types";
 
 export default class Environment implements EnvironmentType {
-  experience = new Experience();
+  experience: ExperienceType;
   scene;
   resources;
   debug;
@@ -12,6 +16,7 @@ export default class Environment implements EnvironmentType {
   environmentMap: EnvironmentMapType = { intensity: 0.4, texture: null };
 
   constructor() {
+    this.experience = new Experience();
     this.scene = this.experience.scene;
     this.resources = this.experience.resources;
     this.debug = this.experience.debug;

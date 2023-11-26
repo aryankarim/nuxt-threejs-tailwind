@@ -1,23 +1,34 @@
 import * as THREE from "three";
 import Experience from "../Experience";
-import type { FoxType, GltfType, TextureItem } from "~/types/types";
+import type {
+  DebugFolder,
+  DebugType,
+  ExperienceType,
+  FoxType,
+  GltfType,
+  ResourcesType,
+  SceneType,
+  TextureItem,
+  TimeType,
+} from "~/types/types";
 
 export default class Fox implements FoxType {
-  experience = new Experience();
-  scene;
-  resources;
-  time;
-  debug;
-  debugFolder;
+  experience: ExperienceType;
+  scene: SceneType;
+  resources: ResourcesType;
+  time: TimeType;
+  debug: DebugType;
+  debugFolder!: DebugFolder;
   resource: TextureItem<GltfType>;
   model!: THREE.Object3D;
-  animation!: {
-    mixer: THREE.AnimationMixer;
+  animation: {
+    mixer: THREE.AnimationMixer | undefined;
     actions: { [key: string]: THREE.AnimationAction };
     play: (name: string) => void;
-  };
+  } = { mixer: undefined, actions: {}, play: () => {} };
 
   constructor() {
+    this.experience = new Experience();
     this.scene = this.experience.scene;
     this.resources = this.experience.resources;
     this.time = this.experience.time;
@@ -25,7 +36,7 @@ export default class Fox implements FoxType {
 
     // Debug
     if (this.debug.active) {
-      this.debugFolder = this.debug?.ui?.addFolder("fox");
+      this.debugFolder = this.debug.ui.addFolder("fox");
     }
 
     // Resource
@@ -92,13 +103,13 @@ export default class Fox implements FoxType {
           this.animation.play("running");
         },
       };
-      this.debugFolder?.add(debugObject, "playIdle");
-      this.debugFolder?.add(debugObject, "playWalking");
-      this.debugFolder?.add(debugObject, "playRunning");
+      this.debugFolder.add(debugObject, "playIdle");
+      this.debugFolder.add(debugObject, "playWalking");
+      this.debugFolder.add(debugObject, "playRunning");
     }
   }
 
   update() {
-    this.animation.mixer.update(this.time.delta * 0.001);
+    this.animation.mixer?.update(this.time.delta * 0.001);
   }
 }

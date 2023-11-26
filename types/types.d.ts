@@ -14,6 +14,7 @@ type GltfType = GLTF;
 type CubeTextureType = THREE.CubeTexture;
 type TextureItem<T> = T;
 type CanvasType = HTMLCanvasElement;
+type DebugFolder = GUI;
 
 interface ExperienceType {
   canvas?: CanvasType;
@@ -31,9 +32,9 @@ interface ExperienceType {
 }
 
 interface CameraType {
-  experience: ExperienceType;
-  sizes: SizesType;
-  scene: SceneType;
+  experience?: ExperienceType;
+  sizes?: SizesType;
+  scene?: SceneType;
   canvas?: CanvasType;
   instance: THREE.PerspectiveCamera;
   controls: OrbitControls;
@@ -65,6 +66,7 @@ interface WorldType {
   floor: FloorType | undefined;
   fox: FoxType | undefined;
   environment: EnvironmentType | undefined;
+  update: () => void;
 }
 
 interface FloorType {
@@ -113,8 +115,8 @@ interface EnvironmentMapType {
  */
 
 interface DebugType {
-  active?: boolean;
-  ui?: GUI;
+  active: boolean;
+  ui: GUI;
 }
 
 interface SizesType extends EventEmitterType {
@@ -131,7 +133,7 @@ interface TimeType extends EventEmitterType {
   tick: () => void;
 }
 
-interface ResourcesType extends EventEmitter {
+interface ResourcesType extends EventEmitterType {
   sources: Array<Source>;
   loaders: Loader;
   toLoad: number;

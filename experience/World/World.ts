@@ -2,17 +2,18 @@ import type {
   EnvironmentType,
   FloorType,
   FoxType,
-  WorldType,
+  ResourcesType,
+  SceneType,
 } from "~/types/types";
 import Experience from "../Experience";
 import Environment from "./Environment";
 import Floor from "./Floor";
 import Fox from "./Fox";
 
-export default class World implements WorldType {
+export default class World {
   experience = new Experience();
-  scene;
-  resources;
+  scene: SceneType;
+  resources: ResourcesType;
   floor: FloorType | undefined;
   fox: FoxType | undefined;
   environment: EnvironmentType | undefined;

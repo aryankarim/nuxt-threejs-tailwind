@@ -1,16 +1,17 @@
 import * as THREE from "three";
 import Experience from "./Experience";
-import type { RendererType } from "~/types/types";
+import type TYPE from "~/types/types";
 
-export default class Renderer implements RendererType {
-  experience = new Experience();
-  canvas;
-  sizes;
-  scene;
-  camera;
-  instance;
+export default class Renderer implements TYPE.RendererType {
+  experience: TYPE.ExperienceType;
+  canvas?: TYPE.CanvasType;
+  sizes: TYPE.SizesType;
+  scene: TYPE.SceneType;
+  camera: TYPE.CameraType;
+  instance: THREE.WebGLRenderer;
 
   constructor() {
+    this.experience = new Experience();
     this.canvas = this.experience.canvas;
     this.sizes = this.experience.sizes;
     this.scene = this.experience.scene;
@@ -26,7 +27,7 @@ export default class Renderer implements RendererType {
     this.instance.shadowMap.type = THREE.PCFSoftShadowMap;
     this.instance.setClearColor("#211d20");
     this.instance.setSize(this.sizes.width, this.sizes.height);
-    this.instance.setPixelRatio(this.sizes.pixelRatio);
+    this.instance.setPixelRatio(this.sizes?.pixelRatio);
   }
 
   resize() {
