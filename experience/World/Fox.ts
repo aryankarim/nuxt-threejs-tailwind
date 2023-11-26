@@ -11,6 +11,11 @@ export default class Fox implements FoxType {
   debugFolder;
   resource: TextureItem<GltfType>;
   model!: THREE.Object3D;
+  animation!: {
+    mixer: THREE.AnimationMixer;
+    actions: { [key: string]: THREE.AnimationAction };
+    play: (name: string) => void;
+  };
 
   constructor() {
     this.scene = this.experience.scene;
@@ -43,8 +48,6 @@ export default class Fox implements FoxType {
   }
 
   setAnimation() {
-    this.animation = {};
-
     // Mixer
     this.animation.mixer = new THREE.AnimationMixer(this.model);
 
@@ -71,7 +74,7 @@ export default class Fox implements FoxType {
 
       newAction.reset();
       newAction.play();
-      newAction.crossFadeFrom(oldAction, 1);
+      newAction.crossFadeFrom(oldAction, 1, false);
 
       this.animation.actions.current = newAction;
     };
@@ -89,9 +92,9 @@ export default class Fox implements FoxType {
           this.animation.play("running");
         },
       };
-      this.debugFolder.add(debugObject, "playIdle");
-      this.debugFolder.add(debugObject, "playWalking");
-      this.debugFolder.add(debugObject, "playRunning");
+      this.debugFolder?.add(debugObject, "playIdle");
+      this.debugFolder?.add(debugObject, "playWalking");
+      this.debugFolder?.add(debugObject, "playRunning");
     }
   }
 
