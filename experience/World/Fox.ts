@@ -44,6 +44,7 @@ export default class Fox implements FoxType {
 
     this.setModel();
     this.setAnimation();
+    this.setListeners();
   }
 
   setModel() {
@@ -94,13 +95,13 @@ export default class Fox implements FoxType {
     if (this.debug.active) {
       const debugObject = {
         playIdle: () => {
-          this.animation.play("idle");
+          this.playIdle();
         },
         playWalking: () => {
-          this.animation.play("walking");
+          this.playWalking();
         },
         playRunning: () => {
-          this.animation.play("running");
+          this.playRunning();
         },
       };
       this.debugFolder.add(debugObject, "playIdle");
@@ -109,7 +110,27 @@ export default class Fox implements FoxType {
     }
   }
 
+  setListeners() {
+    document.onkeydown = (e: KeyboardEvent) => {
+      e = e || window.event;
+      if (e.key == "ArrowUp") this.playRunning();
+      if (e.key == "ArrowDown") this.playIdle();
+    };
+  }
+
   update() {
     this.animation.mixer?.update(this.time.delta * 0.001);
+  }
+
+  playIdle() {
+    this.animation.play("idle");
+  }
+
+  playWalking() {
+    this.animation.play("walking");
+  }
+
+  playRunning() {
+    this.animation.play("running");
   }
 }
