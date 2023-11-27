@@ -15,14 +15,13 @@ export default class Camera {
     this.experience = new Experience();
     this.sizes = this.experience.sizes;
     this.scene = this.experience.scene;
-    console.log(this.experience.canvas);
 
     this.canvas = this.experience.canvas;
 
     //  set instance
     this.instance = new THREE.PerspectiveCamera(
       35,
-      this.sizes?.width || 200 / (this.sizes?.height || 200),
+      this.sizes?.width / this.sizes?.height,
       0.1,
       100
     );
@@ -35,8 +34,7 @@ export default class Camera {
   }
 
   resize() {
-    this.instance.aspect =
-      this.sizes?.width || 200 / (this.sizes?.height || 200);
+    this.instance.aspect = this.sizes?.width / this.sizes?.height;
     this.instance.updateProjectionMatrix();
   }
 

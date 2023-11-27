@@ -72,7 +72,8 @@ export default class Environment implements EnvironmentType {
 
   setEnvironmentMap() {
     this.environmentMap.intensity = 0.4;
-    this.environmentMap.texture = this.resources.textures.environmentMapTexture;
+    this.environmentMap.texture =
+      this.resources.cubeTextures.environmentMapTexture;
     this.environmentMap.texture.colorSpace = THREE.SRGBColorSpace;
 
     this.scene.environment = this.environmentMap.texture;

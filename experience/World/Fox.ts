@@ -25,7 +25,7 @@ export default class Fox implements FoxType {
     mixer: THREE.AnimationMixer | undefined;
     actions: { [key: string]: THREE.AnimationAction };
     play: (name: string) => void;
-  } = { mixer: undefined, actions: {}, play: () => {} };
+  } = { mixer: undefined, actions: {}, play: Function };
 
   constructor() {
     this.experience = new Experience();
